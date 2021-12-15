@@ -15,9 +15,7 @@
         summary: <show summary>,
         image: <an image from the show data, or a default imege if no image exists, (image isn't needed until later)>
       }
- */
-
-    
+ */    
     
      async function searchShows(query) {
   // TODO: Make an ajax request to the searchShows api.  Remove
@@ -90,12 +88,20 @@ $("#search-form").on("submit", async function handleSearch (evt) {
  */
 
 async function getEpisodes(id) {
+  let response = await axios.get(`http://api.tvmaze.com/shows/${id}/episodes`);
+      let episodes = response.data.map(episode => {
+        id: episode.id; 
+        name: episode.name; 
+        season: episode.season; 
+        number: episode.number; 
+      }); 
+      return episodes; 
+
   // TODO: get episodes from tvmaze
   //       you can get this by making GET request to
   //       http://api.tvmaze.com/shows/SHOW-ID-HERE/episodes
 
   // TODO: return array-of-episode-info, as described in docstring above
-
-  
-
 }
+
+
