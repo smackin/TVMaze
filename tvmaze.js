@@ -21,13 +21,13 @@
   // TODO: Make an ajax request to the searchShows api.  Remove
   // hard coded data.
       const response = await axios.get(`http://api.tvmaze.com/search/shows?q=${query}`); 
-      let data = response.data.map(result => {
+      let data = response.data.map(function(result) {
         let show = result.show; 
         return {
-          id : show.id, 
-          name: show.name, 
-          summary: show.summary, 
-          image: show.image 
+          id : show.show.id, 
+          name: show.show.name, 
+          summary: show.show.summary, 
+          image: show.show.image 
         };
       }); 
  
@@ -35,7 +35,7 @@
     //   for (let shows of dataArray){
     //     console.log(shows)
     //   }
-  
+  console.log(shows);
   return shows; 
 }
 
@@ -89,7 +89,8 @@ $("#search-form").on("submit", async function handleSearch (evt) {
 
 async function getEpisodes(id) {
   let response = await axios.get(`http://api.tvmaze.com/shows/${id}/episodes`);
-      let episodes = response.data.map(episode => {
+      let episodes = response.data.map(function(episode) {
+        
         id: episode.id; 
         name: episode.name; 
         season: episode.season; 

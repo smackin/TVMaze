@@ -3,8 +3,12 @@ const form = document.querySelector('#searchForm');
 form.addEventListener('submit', async function(e){
     e.preventDefault(); 
     const searchTerm = form.elements.query.value;
-    const params = {params: {q:searchTerm, }} // each key-value pair will be added to the query string.   
-    const res = await axios.get(`https://api.tvmaze.com/search/shows?q=`, params); 
+    let res = await axios.get(`https://api.tvmaze.com/search/shows?q=${query}`, {
+        params: {
+            q: query, // each key-value pair will be added to the query string.   
+        }
+    }); 
+
     const episode = {
         id: res.data[0].show.id,
         name:  res.data[0].show.name,
