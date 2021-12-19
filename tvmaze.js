@@ -15,28 +15,28 @@
         summary: <show summary>,
         image: <an image from the show data, or a default imege if no image exists, (image isn't needed until later)>
       }
- */    
-    
-     async function searchShows(query) {
+ */
+
+async function searchShows(query) {
   // TODO: Make an ajax request to the searchShows api.  Remove
   // hard coded data.
-      const response = await axios.get(`http://api.tvmaze.com/search/shows?q=${query}`); 
-      let data = response.data.map(function(result) {
-        let show = result.show; 
-        return {
-          id : show.show.id, 
-          name: show.show.name, 
-          summary: show.show.summary, 
-          image: show.show.image 
-        };
-      }); 
- 
-    // let dataArray =  (Object.entries(data))
-    //   for (let shows of dataArray){
-    //     console.log(shows)
-    //   }
-  console.log(shows);
-  return shows; 
+  const response = await axios.get(`http://api.tvmaze.com/search/shows?q=${query}`);
+  console.log(response)
+  let data = response.data.map(function (result) {
+    let show = result.show;
+    return {
+      id: show.id,
+      name: show.name,
+      summary: show.summary,
+      image: show.image
+    };
+  });
+
+  // let dataArray =  (Object.entries(data))
+  //   for (let shows of dataArray){
+  //     console.log(shows)
+  //   }
+  return data;
 }
 
 /** Populate shows list:
@@ -69,40 +69,48 @@ function populateShows(shows) {
  *    - get list of matching shows and show in shows list
  */
 
-$("#search-form").on("submit", async function handleSearch (evt) {
-  evt.preventDefault();
 
-  let query = $("#search-query").val();
-  if (!query) return;
+// Calvin Note: add document.ready so the page can fully load and then set submit event listener
+$(document).ready(function () {
 
-  $("#episodes-area").hide();
+  // Calvin Note: Update id to match DOM id #searchform
+  $("#searchForm").on("submit", async function handleSearch(evt) {
+    evt.preventDefault();
 
-  let shows = await searchShows(query);
+    // Calvin Note: Update id to match DOM id #search-query
+    let query = $("#search-query").val();
+    if (!query) return;
 
-  populateShows(shows);
+    $("#episodes-area").hide();
+
+    let shows = await searchShows(query);
+    console.log(shows);
+
+    populateShows(shows);
+  });
 });
 
 
-/** Given a show ID, return list of episodes:
- *      { id, name, season, number }
- */
+// /** Given a show ID, return list of episodes:
+//  *      { id, name, season, number }
+//  */
 
-async function getEpisodes(id) {
-  let response = await axios.get(`http://api.tvmaze.com/shows/${id}/episodes`);
-      let episodes = response.data.map(function(episode) {
-        
-        id: episode.id; 
-        name: episode.name; 
-        season: episode.season; 
-        number: episode.number; 
-      }); 
-      return episodes; 
+// async function getEpisodes(id) {
+//   let response = await axios.get(`http://api.tvmaze.com/shows/${id}/episodes`);
+//   let episodes = response.data.map(function (episode) {
 
-  // TODO: get episodes from tvmaze
-  //       you can get this by making GET request to
-  //       http://api.tvmaze.com/shows/SHOW-ID-HERE/episodes
+//     id: episode.id;
+//     name: episode.name;
+//     season: episode.season;
+//     number: episode.number;
+//   });
+//   return episodes;
 
-  // TODO: return array-of-episode-info, as described in docstring above
-}
+//   // TODO: get episodes from tvmaze
+//   //       you can get this by making GET request to
+//   //       http://api.tvmaze.com/shows/SHOW-ID-HERE/episodes
+
+//   // TODO: return array-of-episode-info, as described in docstring above
+// }
 
 
