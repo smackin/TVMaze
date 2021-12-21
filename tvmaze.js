@@ -21,13 +21,14 @@
   // TODO: Make an ajax request to the searchShows api.  Remove
   // hard coded data.
       const response = await axios.get(`http://api.tvmaze.com/search/shows?q=${query}`); 
-      let data = response.data.map(function(result) {
+      console.log(response)
+      let data = response.data.map(function (result) {
         let show = result.show; 
         return {
-          id : show.show.id, 
-          name: show.show.name, 
-          summary: show.show.summary, 
-          image: show.show.image 
+          id : show.id, 
+          name: show.name, 
+          summary: show.summary, 
+          image: show.image 
         };
       }); 
  
@@ -35,8 +36,8 @@
     //   for (let shows of dataArray){
     //     console.log(shows)
     //   }
-  console.log(shows);
-  return shows; 
+  // console.log(shows);
+  return data; 
 }
 
 /** Populate shows list:
@@ -68,6 +69,9 @@ function populateShows(shows) {
  *    - hide episodes area
  *    - get list of matching shows and show in shows list
  */
+// added document.ready.  This allows the page to fully load before it sends the submit event listener. 
+$(document).ready(function () {
+
 
 $("#search-form").on("submit", async function handleSearch (evt) {
   evt.preventDefault();
@@ -81,7 +85,7 @@ $("#search-form").on("submit", async function handleSearch (evt) {
 
   populateShows(shows);
 });
-
+},
 
 /** Given a show ID, return list of episodes:
  *      { id, name, season, number }
@@ -97,12 +101,9 @@ async function getEpisodes(id) {
         number: episode.number; 
       }); 
       return episodes; 
-
+    })
   // TODO: get episodes from tvmaze
   //       you can get this by making GET request to
   //       http://api.tvmaze.com/shows/SHOW-ID-HERE/episodes
 
   // TODO: return array-of-episode-info, as described in docstring above
-}
-
-

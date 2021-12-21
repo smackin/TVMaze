@@ -1,23 +1,30 @@
 const form = document.querySelector('#searchForm'); 
+    form.addEventListener('submit', async function(e){
+        e.preventDefault(); 
+    });
 
-form.addEventListener('submit', async function(e){
-    e.preventDefault(); 
-    const searchTerm = form.elements.query.value;
+    async function searchShows(query) {
+     query = form.elements.query.value;
     let res = await axios.get(`https://api.tvmaze.com/search/shows?q=${query}`, {
         params: {
-            q: query, // each key-value pair will be added to the query string.   
-        }
-    }); 
+            q: query // each key-value pair will be added to the query string.   
+        },
 
-    const episode = {
-        id: res.data[0].show.id,
-        name:  res.data[0].show.name,
-        summary: res.data[0].show.summary,
-     };
-    createEpisodeList(episode); 
+        let results = response.data.map(function(result) {
+            let show = result.show; 
+            return {
+              id : show.show.id, 
+              name: show.show.name, 
+              summary: show.show.summary, 
+              image: show.show.image,
+            };
+    }) 
+
+    
+    //createEpisodeList(episode); 
     // makeImages(res.data);// function created below to make image - the images are being made from the res.data element that was returned by the API.   
-    form.elements.query.value = ''; // emptying the input after the submit request is run. 
-});
+    //form.elements.query.value = ''; // emptying the input after the submit request is run. 
+// });
 // to display all images for search results loop over res.data, which is an array,  and then for each result - create an image and append it. make a new function for this.  You would take the make image portion of the function and make a new function to call insude of form submission.   
 
 function makeImages(shows){ 
